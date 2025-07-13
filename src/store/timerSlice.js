@@ -30,6 +30,33 @@ const timerSlice = createSlice({
     resetHistory: (state, action) => {
       state.history = action.payload;
     },
+
+    // ✅ New actions for Bulk Operations (Fix your app crash)
+    startTimersInCategory: (state, action) => {
+      const category = action.payload;
+      state.timers.forEach(timer => {
+        if (timer.category === category && timer.status !== 'Completed') {
+          timer.status = 'Running';
+        }
+      });
+    },
+    pauseTimersInCategory: (state, action) => {
+      const category = action.payload;
+      state.timers.forEach(timer => {
+        if (timer.category === category && timer.status !== 'Completed') {
+          timer.status = 'Paused';
+        }
+      });
+    },
+    resetTimersInCategory: (state, action) => {
+      const category = action.payload;
+      state.timers.forEach(timer => {
+        if (timer.category === category) {
+          timer.remaining = timer.duration;
+          timer.status = 'Paused';
+        }
+      });
+    },
   },
 });
 
@@ -40,6 +67,9 @@ export const {
   resetTimers,
   addHistory,
   resetHistory,
+  startTimersInCategory,
+  pauseTimersInCategory,
+  resetTimersInCategory,
 } = timerSlice.actions;
 
 export default timerSlice.reducer;

@@ -25,9 +25,15 @@ export default function HomeScreen() {
               </Text>
             </TouchableOpacity>
             <View style={styles.actionsRow}>
-              <Button title="Start All" onPress={() => dispatch(startTimersInCategory(category))} />
-              <Button title="Pause All" onPress={() => dispatch(pauseTimersInCategory(category))} />
-              <Button title="Reset All" onPress={() => dispatch(resetTimersInCategory(category))} />
+              <View style={{ flex: 1, marginHorizontal: 4 }}>
+                <Button title="Start All" onPress={() => dispatch(startTimersInCategory(category))} />
+              </View>
+              <View style={{ flex: 1, marginHorizontal: 4 }}>
+                <Button title="Pause All" onPress={() => dispatch(pauseTimersInCategory(category))} />
+              </View>
+              <View style={{ flex: 1, marginHorizontal: 4 }}>
+                <Button title="Reset All" onPress={() => dispatch(resetTimersInCategory(category))} />
+              </View>
             </View>
             {expanded[category] && timers.filter(t => t.category === category).map(timer => (
               <TimerCard key={timer.id} timer={timer} />
