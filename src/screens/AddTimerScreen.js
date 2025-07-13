@@ -12,6 +12,7 @@ import {
 } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import { useTheme } from '../components/ThemeContext';
+import { useFocusEffect } from '@react-navigation/native';
 
 export default function AddTimerScreen({ navigation }) {
   const [name, setName] = useState('');
@@ -21,6 +22,13 @@ export default function AddTimerScreen({ navigation }) {
   const [loading, setLoading] = useState(false);
   const { colors } = useTheme();
 
+  useFocusEffect(
+    React.useCallback(() => {
+      setName('');
+      setDuration('');
+      setCategory('Workout');
+    }, [])
+  );
   const saveTimer = () => {
     const parsedDuration = parseInt(duration);
     if (!name.trim() || isNaN(parsedDuration) || parsedDuration <= 0) {

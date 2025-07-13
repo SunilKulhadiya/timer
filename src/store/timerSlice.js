@@ -31,12 +31,14 @@ const timerSlice = createSlice({
       state.history = action.payload;
     },
 
-    // ✅ New actions for Bulk Operations (Fix your app crash)
+    // ✅ Bulk Actions (Correct with timestamps)
     startTimersInCategory: (state, action) => {
       const category = action.payload;
+      const now = Date.now();
       state.timers.forEach(timer => {
         if (timer.category === category && timer.status !== 'Completed') {
           timer.status = 'Running';
+          timer.startedAt = now;
         }
       });
     },
