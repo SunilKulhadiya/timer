@@ -33,13 +33,19 @@ export default function TimerCard({ timer }) {
   }, [timer.status]);
 
   const start = () => {
-    dispatch(updateTimer({ ...timer, status: 'Running', startedAt: Date.now() }));
+    dispatch(updateTimer({
+      ...timer,
+      status: 'Running',
+      startedAt: Date.now() - (timer.duration - timer.remaining) * 1000
+    }));
   };
 
   const pause = () => {
-    clearInterval(intervalRef.current);
-    intervalRef.current = null;
-    dispatch(updateTimer({ ...timer, status: 'Paused', remaining }));
+    if (timer.status === 'Running') {
+      const elapsed = Math.floor((Date.now() - timer.startedAt) / 1000);
+      const newRemaining = Math.max(timer.duration - elapsed, 0);
+      dispatch(updateTimer({ ...timer, status: 'Paused', remaining: newRemaining }));
+    }
   };
 
   const reset = () => {

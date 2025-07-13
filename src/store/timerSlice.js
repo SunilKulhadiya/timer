@@ -38,15 +38,19 @@ const timerSlice = createSlice({
       state.timers.forEach(timer => {
         if (timer.category === category && timer.status !== 'Completed') {
           timer.status = 'Running';
-          timer.startedAt = now;
+          timer.startedAt = now - (timer.duration - timer.remaining) * 1000;
         }
       });
     },
     pauseTimersInCategory: (state, action) => {
       const category = action.payload;
+      const now = Date.now();
       state.timers.forEach(timer => {
-        if (timer.category === category && timer.status !== 'Completed') {
+        if (timer.category === category && timer.status === 'Running') {
+          const elapsed = Math.floor((now - timer.startedAt) / 1000);
+          timer.remaining = Math.max(timer.duration - elapsed, 0);
           timer.status = 'Paused';
+          delete timer.startedAt;
         }
       });
     },
